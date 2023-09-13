@@ -39,9 +39,10 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Include-Resource>src/main/media</Include-Resource>
+            <Include-Resource>src/main/media,src/main/resources</Include-Resource>
             <Sling-Initial-Content>
               SLING-INF/content/libs/cards/resources/media/sparc/;path:=/libs/cards/resources/media/sparc/;overwrite:=true;uninstall:=true,
+              SLING-INF/content/libs/cards/conf/Media.json;path:=/libs/cards/conf/Media;overwriteProperties:=true,
             </Sling-Initial-Content>
           </instructions>
         </configuration>
