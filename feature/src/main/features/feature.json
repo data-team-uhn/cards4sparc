@@ -16,6 +16,9 @@
 // under the License.
 
 {
+  "prototype":{
+    "id": "io.uhndata.cards:cards-patient-portal:slingosgifeature:0.9-SNAPSHOT"
+  },
   "bundles":[
     {
       "id":"io.uhndata.cards:sparc-resources-clinical-data:0.9-SNAPSHOT",
