@@ -31,6 +31,24 @@
   <name>CARDS for SPARC Resources</name>
   <description>A collection of questionnaires and other resources for CARDS for SPARC.</description>
 
+  <build>
+    <plugins>
+      <!-- Check that each source file has the right license header. -->
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <version>0.13</version>
+        <configuration>
+          <excludes combine.children="append">
+            <!-- Used by maven-remote-resources-plugin -->
+            <exclude>project_code.txt</exclude>
+            <exclude>project_name.txt</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <modules>
     <module>clinical-data</module>
     <module>feature</module>
