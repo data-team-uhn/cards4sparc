@@ -21,15 +21,31 @@
 (docker image inspect cards/sling-feature-downloader >/dev/null 2>/dev/null) || { echo "Fail: Could not find the cards/sling-feature-downloader locally. Exiting."; exit 1; }
 
 PROJECT_VERSION="0.9-SNAPSHOT"
+GENERIC_CARDS_DOCKER_IMAGE="ghcr.io/data-team-uhn/cards:latest-generic"
 
 mkdir .m2
+mkdir .cards-generic-mvnrepo
 
+# Copy the files from the generic CARDS Docker image ~/.m2 directory to this local .cards-generic-mvnrepo directory
+docker run \
+	--rm \
+	-v $(realpath .cards-generic-mvnrepo):/cards-generic-mvnrepo \
+	-e HOST_UID=$UID \
+	-e HOST_GID=$(id -g) \
+	--network none \
+	--entrypoint /bin/sh \
+	-it $GENERIC_CARDS_DOCKER_IMAGE -c 'cp -r /root/.m2/repository /cards-generic-mvnrepo && chown -R ${HOST_UID}:${HOST_GID} /cards-generic-mvnrepo'
+
+# Add any packages that are required for running cards4SPARC and are not included in the generic CARDS Docker image
+# to this local .m2 directory
 docker run \
 	--rm \
 	--user $UID:$(id -g) \
 	-v ~/.m2:/host_m2:ro \
+	-v $(realpath .cards-generic-mvnrepo):/cards-generic-mvnrepo:ro \
 	-v $(realpath .m2):/m2 \
 	-e MAVEN_FEATURE_NAME="mvn:io.uhndata.cards/cards4sparc/${PROJECT_VERSION}/slingosgifeature" \
+	-e MAVEN_REPO_URLS="file:///cards-generic-mvnrepo/repository,http://localhost:8000" \
 	--network none \
 	--entrypoint /bin/sh \
 	-it cards/sling-feature-downloader /download_single_feature_with_deps.sh
