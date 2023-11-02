@@ -16,7 +16,7 @@
 # under the License.
 
 # Start with the generic CARDS image
-FROM ghcr.io/data-team-uhn/cards:latest
+FROM ghcr.io/data-team-uhn/cards:latest-generic
 
 # Configure the image for Cards4SPARC
 RUN mkdir /external_project
