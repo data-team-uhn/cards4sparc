@@ -23,6 +23,8 @@ RUN mkdir /external_project
 COPY project_code.txt /external_project
 COPY project_name.txt /external_project
 COPY project_init.sh /external_project
+COPY docker_compose_env.json /external_project
+COPY project_logo.png /metadata/logo.png
 
 # Copy in the required JARs
 COPY .m2/repository /root/.m2/repository

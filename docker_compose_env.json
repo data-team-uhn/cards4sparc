@@ -1,0 +1,16 @@
+{
+  "cardsinitial": [
+    {
+      "name": "CARDS_PROJECT",
+      "value": "cards4sparc",
+      "conditions": null
+    }
+  ],
+  "proxy": [
+    {
+      "name": "CARDS_APP_NAME",
+      "value": "SPARC",
+      "conditions": null
+    }
+  ]
+}
