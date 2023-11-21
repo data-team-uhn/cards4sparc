@@ -24,17 +24,6 @@ PROJECT_VERSION="0.9-SNAPSHOT"
 GENERIC_CARDS_DOCKER_IMAGE="ghcr.io/data-team-uhn/cards:latest-generic"
 
 mkdir .m2
-mkdir .cards-generic-mvnrepo
-
-# Copy the files from the generic CARDS Docker image ~/.m2 directory to this local .cards-generic-mvnrepo directory
-docker run \
-	--rm \
-	-v $(realpath .cards-generic-mvnrepo):/cards-generic-mvnrepo \
-	-e HOST_UID=$UID \
-	-e HOST_GID=$(id -g) \
-	--network none \
-	--entrypoint /bin/sh \
-	-it $GENERIC_CARDS_DOCKER_IMAGE -c 'cp -r /root/.m2/repository /cards-generic-mvnrepo && chown -R ${HOST_UID}:${HOST_GID} /cards-generic-mvnrepo'
 
 # Add any packages that are required for running cards4SPARC and are not included in the generic CARDS Docker image
 # to this local .m2 directory
