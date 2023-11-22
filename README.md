@@ -2,33 +2,65 @@
 
 ## Building
 
-To build the Cards4SPARC project, simply run:
+To build the Cards4SPARC project, first gather the _CARDS-generic_ Maven
+artifacts - this step can be skipped if the generic CARDS platform was already built on this machine:
 
 ```bash
-mvn clean install
+./get_cards_generic_jars.sh
+```
+
+Then run:
+
+```bash
+mvn clean install -U
 ```
 
 ### Building Production-Ready Docker Images
 
-To build a _production-ready_, _self-contained_ Cards4SPARC Docker image,
-you will first need to have built a _production-ready_, _self-contained_
-generic CARDS Docker image. To do so, enter the `Utilities/Packaging/Docker`
-directory in the [generic CARDS repository](https://github.com/data-team-uhn/cards)
-and run:
-
-```bash
-./build_self_contained.sh ghcr.io/data-team-uhn/cards:latest
-```
-
-Once the build of that Docker image completes, enter the root of this
-_Cards4SPARC_ repository and run:
+A _production-ready_, _self-contained_ Cards4SPARC Docker image,
+can be built by running:
 
 ```bash
 ./get_cards4sparc_jars.sh
 docker build -t ghcr.io/data-team-uhn/cards4sparc:latest .
 ```
 
+### Building Development Docker Images
+
+A _development_ Cards4SPARC Docker image can be built by running:
+
+```bash
+mkdir -p .m2/repository
+docker build -t ghcr.io/data-team-uhn/cards4sparc:latest .
+```
+
+This will skip copying any of the built JARs into the Docker image.
+Therefore, the resultant image should only be used with the
+`--dev_docker_image` and `--cards_generic_jars_repo` flags for
+`generate_compose_yaml.py`. This is useful for testing new code during
+development as it does not require a new Docker image to be built every
+time that code is changed.
+
 ## Running
+
+### Production Mode
+
+#### Using Docker Compose
+
+**Please use the `CARDS-2366` branch on the `cards-deploy-tool` repository until it is merged into `master`**
+
+Enter the main `cards-deploy-tool` repository (https://github.com/data-team-uhn/cards-deploy-tool)
+and start the project with:
+
+```bash
+python3 generate_compose_yaml.py --cards_docker_image cards4sparc:latest --oak_filesystem --composum --smtps
+docker-compose build
+docker-compose up -d
+```
+
+Cards4SPARC will be available at http://localhost:8080 once it starts.
+
+
 
 ### Development Mode
 
@@ -50,21 +82,13 @@ Cards4SPARC will be available at http://localhost:8080 once it starts.
 
 #### Using Docker Compose
 
-**Running the following commands requires the use of the --external_cards_project parameter for generate_compose_yaml.py**
-**Therefore, it will only work on the CARDS-2349 branch of the CARDS repository until the CARDS-2349 Pull Request is merged**
+**Please use the `CARDS-2366` branch on the `cards-deploy-tool` repository until it is merged into `master`**
 
-Enter the main `cards` repository (https://github.com/data-team-uhn/cards)
-and build the generic CARDS platform with:
-
-```bash
-mvn clean install -Pdocker
-```
-
-Then, start the project with:
+Enter the main `cards-deploy-tool` repository (https://github.com/data-team-uhn/cards-deploy-tool)
+and start the project with:
 
 ```bash
-cd compose-cluster
-python3 generate_compose_yaml.py --dev_docker_image --oak_filesystem --composum --external_cards_project /path/to/local/cards4sparc/repo
+python3 generate_compose_yaml.py --dev_docker_image --cards_generic_jars_repo /path/to/cards4sparc/.cards-generic-mvnrepo --cards_docker_image cards4sparc:latest --oak_filesystem --composum --smtps
 docker-compose build
 docker-compose up -d
 ```
