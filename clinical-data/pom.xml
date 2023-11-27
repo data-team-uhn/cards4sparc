@@ -39,9 +39,13 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Include-Resource>src/main/media</Include-Resource>
+            <Include-Resource>src/main/media,src/main/resources</Include-Resource>
             <Sling-Initial-Content>
               SLING-INF/content/libs/cards/resources/media/sparc/;path:=/libs/cards/resources/media/sparc/;overwrite:=true;uninstall:=true,
+              SLING-INF/content/libs/cards/conf/Media.json;path:=/libs/cards/conf/Media;overwriteProperties:=true,
+              SLING-INF/content/libs/cards/conf/AppName.json;path:=/libs/cards/conf/AppName;overwriteProperties:=true,
+              SLING-INF/content/libs/cards/conf/ThemeColor.json;path:=/libs/cards/conf/ThemeColor;overwriteProperties:=true,
+              SLING-INF/content/Questionnaires/;path:=/Questionnaires/;overwriteProperties:=true;uninstall:=true;checkin:=true
             </Sling-Initial-Content>
           </instructions>
         </configuration>

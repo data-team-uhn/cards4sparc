@@ -2,6 +2,7 @@
 target
 target-eclipse
 .mvnrepo
+.m2
 
 # IDEA
 *.iml
